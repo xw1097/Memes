@@ -8,6 +8,7 @@
 
 import UIKit
 
+// A struct to contain information about stored Meme
 struct Meme {
     let topText: String
     let bottomText: String
@@ -29,20 +30,19 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDele
     @IBOutlet weak var albumButton: UIBarButtonItem!;
     
     required init?(coder aDecoder: NSCoder) {
-        self.imagePicker = UIImagePickerController();super.init(coder: aDecoder);
-        // empty
+        // eager initialization
+        self.imagePicker = UIImagePickerController();
+        super.init(coder: aDecoder);
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        
-        super.viewWillAppear(animated)
-        subscribeToKeyboardNotifications()
+        super.viewWillAppear(animated);
+        subscribeToKeyboardNotifications();
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        
-        super.viewWillDisappear(animated)
-        unsubscribeFromKeyboardNotifications()
+        super.viewWillDisappear(animated);
+        unsubscribeFromKeyboardNotifications();
     }
     
     override func viewDidLoad() {
@@ -52,16 +52,16 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDele
         cameraButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera);
         topText.text = "TOP";
         bottomText.text = "BOTTOM";
-//      topText.textAlignment = .center;
-//      bottomText.textAlignment = .center;
+        topText.textAlignment = .center;
+        bottomText.textAlignment = .center;
         topText.delegate = self;
         bottomText.delegate = self;
         let memeTextAttributes: [NSAttributedString.Key: Any] = [
             NSAttributedString.Key.strokeColor: UIColor.black,
             NSAttributedString.Key.foregroundColor: UIColor.white,
+            NSAttributedString.Key.font: UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
+            NSAttributedString.Key.strokeWidth: 0 // any positive value will make entire text black
         ];
-        topText.textAlignment = .center;
-        bottomText.textAlignment = .center;
         topText.defaultTextAttributes = memeTextAttributes;
         bottomText.defaultTextAttributes = memeTextAttributes;
         shareButton.isEnabled = false;
@@ -72,7 +72,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDele
     }
     
     @IBAction func openAlbum(_ sender: Any) {
-        presentImagePicker(withSource: .photoLibrary)
+        presentImagePicker(withSource: .photoLibrary);
     }
     
     @IBAction func share(_ sender: UIBarButtonItem) {
@@ -80,7 +80,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDele
         let activity = UIActivityViewController(
             activityItems: ["I created this picture, look!", generatedImage],
             applicationActivities: nil
-        )
+        );
         activity.popoverPresentationController?.barButtonItem = sender;
         activity.completionWithItemsHandler = { (activityType: UIActivity.ActivityType?, completed:
             Bool, arrayReturnedItems: [Any]?, error: Error?) in
@@ -98,7 +98,6 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDele
         self.present(self.imagePicker, animated: true, completion: nil);
     }
 }
-
 
 extension ViewController {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
@@ -132,11 +131,11 @@ extension ViewController {
 extension ViewController {
     func subscribeToKeyboardNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil);
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil);
     }
     
     func unsubscribeFromKeyboardNotifications() {
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil);
     }
     
     @objc func keyboardWillShow(_ notification:Notification) {
@@ -152,26 +151,25 @@ extension ViewController {
     }
     
     func getKeyboardHeight(_ notification:Notification) -> CGFloat {
-        let userInfo = notification.userInfo
-        let keyboardSize = userInfo![UIResponder.keyboardFrameEndUserInfoKey] as! NSValue // of CGRect
-        return keyboardSize.cgRectValue.height
+        let userInfo = notification.userInfo;
+        let keyboardSize = userInfo![UIResponder.keyboardFrameEndUserInfoKey] as! NSValue;
+        return keyboardSize.cgRectValue.height;
     }
 }
 
 extension ViewController {
     func save(_ memedImage: UIImage) {
-        // Create the meme
+        // Create the meme, but not stored in any db
         _ = Meme(topText: self.topText.text!, bottomText: self.bottomText.text!, originalImage: imageView.image!, memedImage: memedImage);
     }
     
     func generateMemedImage() -> UIImage {
-        
         // Render view to an image
-        UIGraphicsBeginImageContext(self.view.frame.size)
-        view.drawHierarchy(in: self.view.frame, afterScreenUpdates: true)
-        let memedImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
-        UIGraphicsEndImageContext()
+        UIGraphicsBeginImageContext(self.view.frame.size);
+        view.drawHierarchy(in: self.view.frame, afterScreenUpdates: true);
+        let memedImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()!;
+        UIGraphicsEndImageContext();
         
-        return memedImage
+        return memedImage;
     }
 }
