@@ -50,21 +50,11 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDele
         // setup
         imageView.backgroundColor = .black;
         cameraButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera);
+        shareButton.isEnabled = false;
         topText.text = "TOP";
         bottomText.text = "BOTTOM";
-        topText.textAlignment = .center;
-        bottomText.textAlignment = .center;
-        topText.delegate = self;
-        bottomText.delegate = self;
-        let memeTextAttributes: [NSAttributedString.Key: Any] = [
-            NSAttributedString.Key.strokeColor: UIColor.black,
-            NSAttributedString.Key.foregroundColor: UIColor.white,
-            NSAttributedString.Key.font: UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
-            NSAttributedString.Key.strokeWidth: 0 // any positive value will make entire text black
-        ];
-        topText.defaultTextAttributes = memeTextAttributes;
-        bottomText.defaultTextAttributes = memeTextAttributes;
-        shareButton.isEnabled = false;
+        self.setupForTextField(topText);
+        self.setupForTextField(bottomText);
     }
     
     @IBAction func openCamera(_ sender: Any) {
@@ -96,6 +86,18 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDele
         self.imagePicker.delegate = self;
         self.imagePicker.sourceType = source;
         self.present(self.imagePicker, animated: true, completion: nil);
+    }
+    
+    func setupForTextField(_ textField: UITextField) {
+        textField.textAlignment = .center;
+        textField.delegate = self;
+        let memeTextAttributes: [NSAttributedString.Key: Any] = [
+            NSAttributedString.Key.strokeColor: UIColor.black,
+            NSAttributedString.Key.foregroundColor: UIColor.white,
+            NSAttributedString.Key.font: UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
+            NSAttributedString.Key.strokeWidth: 0 // any positive value will make entire text black
+        ];
+        textField.defaultTextAttributes = memeTextAttributes;
     }
 }
 
@@ -145,8 +147,8 @@ extension ViewController {
     }
     
     @objc func keyboardWillHide(_ notification:Notification) {
-        if (view.frame.origin.y < 0) { // y is offscreen, we should retore y
-            view.frame.origin.y += getKeyboardHeight(notification);
+        if (view.frame.origin.y < 0) { // y is offscreen, we should retore y to 0
+            view.frame.origin.y = 0;
         }
     }
     
