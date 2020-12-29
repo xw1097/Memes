@@ -31,17 +31,16 @@ class SentMeTableViewController: UITableViewController {
         
         let meme = (self.memes!)[indexPath.row];
         
-        (cell as! MemeTableViewCell).cellImage.image = meme.memedImage;
-        (cell as! MemeTableViewCell).cellLabel.text = meme.topText + "..." + meme.bottomText;
+        (cell as! SentMeTableViewCell).cellImage.image = meme.memedImage;
+        (cell as! SentMeTableViewCell).cellLabel.text = meme.topText + "..." + meme.bottomText;
         
         return cell;
     }
     
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == "MemeDetailPageSegue") {
             let detailPageVC = segue.destination as! MemeDetailPageViewController;
-            let memedImage = (sender as! MemeTableViewCell).cellImage.image as UIImage?;
+            let memedImage = (sender as! SentMeTableViewCell).cellImage.image as UIImage?;
             detailPageVC.image = memedImage;
         }
     }

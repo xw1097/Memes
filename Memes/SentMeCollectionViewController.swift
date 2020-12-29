@@ -27,7 +27,6 @@ class SentMeCollectionViewController: UICollectionViewController {
         let dimension = (view.frame.size.width - (2 * space)) / 3.0;
         flowLayout.minimumLineSpacing = space;
         flowLayout.minimumInteritemSpacing = space;
-        // TODO might need to do?
         flowLayout.itemSize = CGSize(width: dimension, height: dimension);
     }
     
@@ -41,7 +40,15 @@ class SentMeCollectionViewController: UICollectionViewController {
         
         let meme = (self.memes!)[indexPath.row];
         
-        (cell as! MemeCollectionViewCell).cellImage.image = meme.memedImage;
+        (cell as! SentMeCollectionViewCell).cellImage.image = meme.memedImage;
         return cell;
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if (segue.identifier == "MemeDetailPageSegue") {
+            let detailPageVC = segue.destination as! MemeDetailPageViewController;
+            let memedImage = (sender as! SentMeCollectionViewCell).cellImage.image as UIImage?;
+            detailPageVC.image = memedImage;
+        }
     }
 }

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MemeCollectionViewCell: UICollectionViewCell {
+class SentMeCollectionViewCell: UICollectionViewCell {
     @IBOutlet var cellImage: UIImageView!
     
 }

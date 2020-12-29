@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MemeTableViewCell: UITableViewCell {
+class SentMeTableViewCell: UITableViewCell {
     @IBOutlet weak var cellImage: UIImageView!
     @IBOutlet weak var cellLabel: UILabel!
     
