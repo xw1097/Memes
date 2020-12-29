@@ -57,6 +57,10 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDele
         self.setupForTextField(bottomText);
     }
     
+    @IBAction func dismissMemeCreationPage(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil);
+    }
+    
     @IBAction func openCamera(_ sender: Any) {
         presentImagePicker(withSource: .camera);
     }
@@ -161,8 +165,11 @@ extension ViewController {
 
 extension ViewController {
     func save(_ memedImage: UIImage) {
-        // Create the meme, but not stored in any db
-        _ = Meme(topText: self.topText.text!, bottomText: self.bottomText.text!, originalImage: imageView.image!, memedImage: memedImage);
+        // Create the meme, store in appdelegate shared data
+        let meme = Meme(topText: self.topText.text!, bottomText: self.bottomText.text!, originalImage: imageView.image!, memedImage: memedImage);
+        (UIApplication.shared.delegate as! AppDelegate).memes.append(meme);
+        self.dismissMemeCreationPage(self);
+        
     }
     
     func generateMemedImage() -> UIImage {
