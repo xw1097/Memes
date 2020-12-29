@@ -16,7 +16,7 @@ struct Meme {
     let memedImage: UIImage
 }
 
-class ViewController: UIViewController,
+class MemeEditorViewController: UIViewController,
 UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
     private var imagePicker: UIImagePickerController;
     private var currentEditingTextField: UITextField?; // used to avoid unnecessary frame slide up
@@ -105,7 +105,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDele
     }
 }
 
-extension ViewController {
+extension MemeEditorViewController {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         guard let selectedimage = info[.originalImage] as? UIImage else {
             return;
@@ -120,7 +120,7 @@ extension ViewController {
     }
 }
 
-extension ViewController {
+extension MemeEditorViewController {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         currentEditingTextField = textField;
         textField.text = "";
@@ -134,7 +134,7 @@ extension ViewController {
 }
 
 // keyboard related code
-extension ViewController {
+extension MemeEditorViewController {
     func subscribeToKeyboardNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil);
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil);
@@ -163,7 +163,7 @@ extension ViewController {
     }
 }
 
-extension ViewController {
+extension MemeEditorViewController {
     func save(_ memedImage: UIImage) {
         // Create the meme, store in appdelegate shared data
         let meme = Meme(topText: self.topText.text!, bottomText: self.bottomText.text!, originalImage: imageView.image!, memedImage: memedImage);
@@ -174,10 +174,12 @@ extension ViewController {
     func generateMemedImage() -> UIImage {
         // Render view to an image
         UIGraphicsBeginImageContext(self.imageView.frame.size);
-        self.imageView.drawHierarchy(in: self.imageView.frame, afterScreenUpdates: true);
-        let memedImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()!;
+        self.view.drawHierarchy(in: self.view.frame, afterScreenUpdates: true);
+        var memedImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext();
-        
+        if let croppedCGImage = (memedImage.cgImage?.cropping(to: self.imageView.frame)) {
+            memedImage = UIImage(cgImage: croppedCGImage)
+        }
         return memedImage;
     }
 }
