@@ -169,7 +169,6 @@ extension ViewController {
         let meme = Meme(topText: self.topText.text!, bottomText: self.bottomText.text!, originalImage: imageView.image!, memedImage: memedImage);
         (UIApplication.shared.delegate as! AppDelegate).memes.append(meme);
         self.dismissMemeCreationPage(self);
-        
     }
     
     func generateMemedImage() -> UIImage {

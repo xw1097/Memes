@@ -20,7 +20,6 @@ class SentMeCollectionViewController: UICollectionViewController {
         self.collectionView.reloadData();
     }
     
-    
     override func viewDidLoad() {
         super.viewDidLoad();
         let space: CGFloat = 3.0;
