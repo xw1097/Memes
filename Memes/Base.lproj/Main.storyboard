@@ -97,7 +97,6 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="JRU-bd-Ikk" firstAttribute="height" secondItem="8AM-s6-Rvz" secondAttribute="height" id="kD7-o3-BOT"/>
                             <constraint firstItem="JRU-bd-Ikk" firstAttribute="width" secondItem="8AM-s6-Rvz" secondAttribute="width" id="yZZ-V2-nnr"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="nSo-bU-U0x"/>

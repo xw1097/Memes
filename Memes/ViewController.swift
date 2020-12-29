@@ -57,7 +57,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDele
         self.setupForTextField(bottomText);
     }
     
-    @IBAction func dismissMemeCreationPage(_ sender: Any) {
+    @IBAction func dismissMemeEditorPage(_ sender: Any) {
         self.dismiss(animated: true, completion: nil);
     }
     
@@ -168,13 +168,13 @@ extension ViewController {
         // Create the meme, store in appdelegate shared data
         let meme = Meme(topText: self.topText.text!, bottomText: self.bottomText.text!, originalImage: imageView.image!, memedImage: memedImage);
         (UIApplication.shared.delegate as! AppDelegate).memes.append(meme);
-        self.dismissMemeCreationPage(self);
+        self.dismissMemeEditorPage(self);
     }
     
     func generateMemedImage() -> UIImage {
         // Render view to an image
-        UIGraphicsBeginImageContext(self.view.frame.size);
-        view.drawHierarchy(in: self.view.frame, afterScreenUpdates: true);
+        UIGraphicsBeginImageContext(self.imageView.frame.size);
+        self.imageView.drawHierarchy(in: self.imageView.frame, afterScreenUpdates: true);
         let memedImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()!;
         UIGraphicsEndImageContext();
         
